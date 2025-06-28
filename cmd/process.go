@@ -46,7 +46,7 @@ func listProcesses(outputFormat string) error {
 	cmd := exec.Command("ps", "aux")
 	output, err := cmd.Output()
 	if err != nil {
-		return err
+		return fmt.Errorf("executing ps: %w", err)
 	}
 
 	lines := strings.Split(string(output), "\n")

@@ -59,7 +59,7 @@ var listCmd = &cobra.Command{
 func listFiles(dir string, minSize int64, outputFormat string) error {
 	files, err := listFilesBySize(dir, minSize)
 	if err != nil {
-		return err
+		return fmt.Errorf("listing files in %s: %w", dir, err)
 	}
 
 	switch outputFormat {
@@ -81,7 +81,7 @@ func listFilesBySize(dir string, minSize int64) ([]FileInfo, error) {
 
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return err
+			return fmt.Errorf("walking %s: %w", path, err)
 		}
 		if !info.IsDir() && info.Size() >= minSize {
 			files = append(files, FileInfo{Path: path, Size: info.Size()})
@@ -89,7 +89,7 @@ func listFilesBySize(dir string, minSize int64) ([]FileInfo, error) {
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to walk directory %s: %w", dir, err)
 	}
 
 	// Sort files by size in descending order
