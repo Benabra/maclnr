@@ -43,27 +43,27 @@ var cleanCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("Failed to clean directory: %v\n", err)
 		}
-		fmt.Printf("Successfully cleaned directory: %s\n", dir)
+		fmt.Printf("\033[32mSuccessfully cleaned directory: %s\033[0m\n", dir)
 	},
 }
 
 func cleanDir(dir string, dryRun bool, verbose bool, removeDS bool, minSize int64) error {
 	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return err
+			return fmt.Errorf("walking %s: %w", path, err)
 		}
 
 		// Remove .DS_Store files
 		if removeDS && info.Name() == ".DS_Store" {
 			if dryRun {
-				fmt.Printf("[Dry Run] Would remove: %s\n", path)
+				fmt.Printf("\033[33m[Dry Run]\033[0m Would remove: %s\n", path)
 			} else {
 				err := os.Remove(path)
 				if err != nil {
-					return err
+					return fmt.Errorf("removing %s: %w", path, err)
 				}
 				if verbose {
-					fmt.Printf("Removed: %s\n", path)
+					fmt.Printf("\033[32mRemoved: %s\033[0m\n", path)
 				}
 			}
 			return nil
@@ -72,14 +72,14 @@ func cleanDir(dir string, dryRun bool, verbose bool, removeDS bool, minSize int6
 		// Remove files larger than minSize
 		if !info.IsDir() && info.Size() >= minSize {
 			if dryRun {
-				fmt.Printf("[Dry Run] Would remove: %s (%d bytes)\n", path, info.Size())
+				fmt.Printf("\033[33m[Dry Run]\033[0m Would remove: %s (%d bytes)\n", path, info.Size())
 			} else {
 				err := os.Remove(path)
 				if err != nil {
-					return err
+					return fmt.Errorf("removing %s: %w", path, err)
 				}
 				if verbose {
-					fmt.Printf("Removed: %s (%d bytes)\n", path, info.Size())
+					fmt.Printf("\033[32mRemoved: %s (%d bytes)\033[0m\n", path, info.Size())
 				}
 			}
 			return nil

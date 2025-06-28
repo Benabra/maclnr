@@ -59,7 +59,7 @@ func displayMemoryUsage(outputFormat string) error {
 
 	output, err := cmd.Output()
 	if err != nil {
-		return err
+		return fmt.Errorf("executing %s: %w", cmd.Path, err)
 	}
 
 	if runtime.GOOS == "darwin" {

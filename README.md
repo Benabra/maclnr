@@ -1,6 +1,6 @@
 # maclnr
 
-`maclnr` is a command-line tool written in Go that helps you manage directories on macOS by listing and cleaning files. It includes functionality to list files by size and remove `.DS_Store` files.
+`maclnr` is a command-line tool written in Go that helps you manage directories by listing and cleaning files. It includes functionality to list files by size and remove `.DS_Store` files.
 
 ## Installation
 
@@ -108,6 +108,20 @@ The `clean` command removes `.DS_Store` files and files larger than a specified 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Watch Mode
+
+Most commands support a `--watch` flag that refreshes the output every two seconds:
+
+```sh
+./maclnr scan memory --watch
 ```
 
-This updated `README.md` file provides installation instructions, usage examples, and explanations for each command and flag available in the `maclnr` tool, including the new functionality to clean files based on a minimum size recursively.
+## Version
+
+Display the current version with:
+
+```sh
+./maclnr --version
+```
+
